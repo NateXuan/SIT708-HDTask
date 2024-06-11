@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#05B205"
+    tools:context=".SelfInformation2Activity">
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Self-Information"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/healthConditionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTitle"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:text="Your health condition (Please list any disease you have):"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/healthCondition"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/healthConditionLabel"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:padding="10dp"
+        android:background="#FFFFFF"
+        android:gravity="top" />
+
+    <TextView
+        android:id="@+id/goalLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/healthCondition"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:text="Your goal (Lose weight, Build muscle, Keep healthy etc.):"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/goal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/goalLabel"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:padding="10dp"
+        android:background="#FFFFFF"
+        android:gravity="top" />
+
+    <TextView
+        android:id="@+id/dietaryPreferencesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/goal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:text="Dietary preferences (Vegetarian, High Protein, Low carb etc.):"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/dietaryPreferences"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/dietaryPreferencesLabel"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:padding="10dp"
+        android:background="#FFFFFF"
+        android:gravity="top" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dietaryPreferences"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:text="Submit" />
+</RelativeLayout>
