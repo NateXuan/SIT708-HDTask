@@ -28,13 +28,12 @@ public class SelfInformation1Activity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String username = intent.getStringExtra("username");
-        String userId = intent.getStringExtra("userId");
         boolean isUpdate = intent.getBooleanExtra("isUpdate", false);
         TextView welcomeTextView = findViewById(R.id.welcomeTextView);
         if (isUpdate) {
             welcomeTextView.setText("Update your information below.");
         } else {
-            welcomeTextView.setText("Welcome " + username + ". Please enter your information below.");
+            welcomeTextView.setText("Welcome " + username + ", please enter your information below.");
         }
 
         nextPageButton.setOnClickListener(v -> {
@@ -47,7 +46,6 @@ public class SelfInformation1Activity extends AppCompatActivity {
                 Toast.makeText(SelfInformation1Activity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             } else {
                 Intent nextIntent = new Intent(SelfInformation1Activity.this, SelfInformation2Activity.class);
-                nextIntent.putExtra("userId", userId);
                 nextIntent.putExtra("age", age);
                 nextIntent.putExtra("gender", gender);
                 nextIntent.putExtra("height", height);

@@ -4,7 +4,5 @@ const userInformationController = require('../controllers/userInformationControl
 
 router.post('/user_information', userInformationController.saveUserInformation);
 router.put('/user_information', userInformationController.updateUserInformation);
-router.post('/health_plan', userInformationController.generateHealthPlan);
-router.post('/today_plan', userInformationController.generateTodayPlan);
 
 module.exports = router;

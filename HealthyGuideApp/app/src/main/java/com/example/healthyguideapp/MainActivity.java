@@ -66,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
                         if (response.getString("message").equals("Login successful")) {
                             String userId = response.getJSONObject("user").getString("_id");
                             Log.d(TAG, "Login successful. User ID: " + userId);
-                            fetchHealthPlan(userId);
+                            Intent intent = new Intent(MainActivity.this, SelfInformation1Activity.class);
+                            intent.putExtra("userId", userId);
+                            startActivity(intent);
                         } else {
                             Log.d(TAG, "Login failed: " + response.getString("message"));
                             Toast.makeText(MainActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -88,51 +90,4 @@ public class MainActivity extends AppCompatActivity {
 
         queue.add(jsonObjectRequest);
     }
-
-    private void fetchHealthPlan(String userId) {
-        String url = "http://10.0.2.2:3000/health_plan";
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        JSONObject userIdJson = new JSONObject();
-        try {
-            userIdJson.put("userId", userId);
-            Log.d(TAG, "Fetching health plan for User ID: " + userId);
-        } catch (JSONException e) {
-            Log.e(TAG, "JSONException: " + e.getMessage());
-        }
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, userIdJson,
-                response -> {
-                    try {
-                        Log.d(TAG, "Health plan response: " + response.toString());
-                        String healthPlan = response.getString("healthPlan");
-                        Log.d(TAG, "Health plan fetched successfully.");
-                        Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
-                        intent.putExtra("userId", userId);
-                        intent.putExtra("healthPlan", healthPlan);
-                        startActivity(intent);
-                    } catch (JSONException e) {
-                        Log.e(TAG, "JSONException: " + e.getMessage());
-                    }
-                },
-                error -> {
-                    Log.e(TAG, "Error fetching health plan: " + error.toString());
-                    if (error.networkResponse != null) {
-                        String body = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-                        Log.e(TAG, "Error response body: " + body);
-                        Toast.makeText(MainActivity.this, "Error fetching health plan: " + body, Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Error fetching health plan: " + error.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                60000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-        ));
-
-        queue.add(jsonObjectRequest);
-    }
-
 }
