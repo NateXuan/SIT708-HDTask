@@ -1,94 +1,58 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#05B205"
     tools:context=".TodaysPlanActivity">
 
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:text="Today's Plan"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/mealPlanLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewTitle"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:text="Meal Plan:"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/mealPlanTextView"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@id/mealPlanLabel"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:padding="10dp"
-        android:background="#FFFFFF"
-        android:gravity="top" />
-
-    <TextView
-        android:id="@+id/exercisePlanLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/mealPlanTextView"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:text="Exercises Plan:"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/exercisePlanTextView"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@id/exercisePlanLabel"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:padding="10dp"
-        android:background="#FFFFFF"
-        android:gravity="top" />
-
-    <EditText
-        android:id="@+id/todaysWeightEditText"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/exercisePlanTextView"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:hint="Today's Weight(kg)"
-        android:padding="10dp"
-        android:background="#FFFFFF" />
+        android:padding="20dp">
 
-    <Button
-        android:id="@+id/completeExerciseButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/todaysWeightEditText"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:text="Complete Exercise" />
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="Today's Plan"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/backToHomeButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/completeExerciseButton"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:text="Back To Homepage" />
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/mealPlanLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewTitle"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp" />
+
+        <LinearLayout
+            android:id="@+id/exercisePlanLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mealPlanLayout"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp" />
+
+        <Button
+            android:id="@+id/backToHomeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exercisePlanLayout"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:text="Back To Homepage" />
+    </RelativeLayout>
+</ScrollView>

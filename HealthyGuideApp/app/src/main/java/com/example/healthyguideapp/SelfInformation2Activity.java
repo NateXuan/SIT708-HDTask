@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 public class SelfInformation2Activity extends AppCompatActivity {
 
+    private static final String TAG = "SelfInformation2Activity";
     private EditText healthConditionEditText;
     private EditText goalEditText;
     private EditText dietaryPreferencesEditText;
@@ -66,13 +67,13 @@ public class SelfInformation2Activity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        fetchHealthPlan(userInfo);
+        fetchHealthPlan(userInfo, age, gender, height, weight, healthCondition, goal, dietaryPreferences);
     }
 
-    private void fetchHealthPlan(JSONObject userInfo) {
+    private void fetchHealthPlan(JSONObject userInfo, String age, String gender, String height, String weight, String healthCondition, String goal, String dietaryPreferences) {
         String url = "http://10.0.2.2:5001/health_plan";
         RequestQueue queue = Volley.newRequestQueue(this);
-        Log.d("HealthPlanRequest", "Sending data: " + userInfo.toString());
+        Log.d(TAG, "Sending data: " + userInfo.toString());
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, userInfo,
                 response -> {
@@ -80,24 +81,30 @@ public class SelfInformation2Activity extends AppCompatActivity {
                         String healthPlan = response.getString("healthPlan");
                         Intent intent = new Intent(SelfInformation2Activity.this, HomePageActivity.class);
                         intent.putExtra("healthPlan", healthPlan);
+                        intent.putExtra("age", age);
+                        intent.putExtra("gender", gender);
+                        intent.putExtra("height", height);
+                        intent.putExtra("weight", weight);
+                        intent.putExtra("healthCondition", healthCondition);
+                        intent.putExtra("goal", goal);
+                        intent.putExtra("dietaryPreferences", dietaryPreferences);
                         startActivity(intent);
                     } catch (JSONException e) {
-                        Log.e("HealthPlanResponse", "Error parsing health plan", e);
+                        Log.e(TAG, "Error parsing health plan", e);
                         Toast.makeText(SelfInformation2Activity.this, "Error parsing health plan", Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {
-                    Log.e("HealthPlanError", "Error fetching health plan: " + error.toString());
+                    Log.e(TAG, "Error fetching health plan: " + error.toString());
                     Toast.makeText(SelfInformation2Activity.this, "Error fetching health plan: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 });
 
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                180000, // 180 seconds
+                180000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        ));
 
         queue.add(jsonObjectRequest);
     }
-
-
 }

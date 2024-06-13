@@ -18,24 +18,42 @@ public class HomePageActivity extends AppCompatActivity {
 
         summaryLayout = findViewById(R.id.summaryLayout);
         Button todaysPlanButton = findViewById(R.id.todaysPlanButton);
-        Button progressTrackingButton = findViewById(R.id.progressTrackingButton);
         Button settingsButton = findViewById(R.id.settingsButton);
 
         Intent intent = getIntent();
         String healthPlan = intent.getStringExtra("healthPlan");
-        String userId = intent.getStringExtra("userId");
+        String age = intent.getStringExtra("age");
+        String gender = intent.getStringExtra("gender");
+        String height = intent.getStringExtra("height");
+        String weight = intent.getStringExtra("weight");
+        String healthCondition = intent.getStringExtra("healthCondition");
+        String goal = intent.getStringExtra("goal");
+        String dietaryPreferences = intent.getStringExtra("dietaryPreferences");
+
         assert healthPlan != null;
         displayHealthPlan(healthPlan);
 
         todaysPlanButton.setOnClickListener(v -> {
             Intent planIntent = new Intent(HomePageActivity.this, TodaysPlanActivity.class);
-            planIntent.putExtra("userId", userId);
+            planIntent.putExtra("age", age);
+            planIntent.putExtra("gender", gender);
+            planIntent.putExtra("height", height);
+            planIntent.putExtra("weight", weight);
+            planIntent.putExtra("healthCondition", healthCondition);
+            planIntent.putExtra("goal", goal);
+            planIntent.putExtra("dietaryPreferences", dietaryPreferences);
             startActivity(planIntent);
         });
 
         settingsButton.setOnClickListener(v -> {
             Intent settingsIntent = new Intent(HomePageActivity.this, SelfInformation1Activity.class);
-            settingsIntent.putExtra("userId", userId);
+            settingsIntent.putExtra("age", age);
+            settingsIntent.putExtra("gender", gender);
+            settingsIntent.putExtra("height", height);
+            settingsIntent.putExtra("weight", weight);
+            settingsIntent.putExtra("healthCondition", healthCondition);
+            settingsIntent.putExtra("goal", goal);
+            settingsIntent.putExtra("dietaryPreferences", dietaryPreferences);
             settingsIntent.putExtra("isUpdate", true);
             startActivity(settingsIntent);
         });

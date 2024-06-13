@@ -2,8 +2,9 @@ package com.example.healthyguideapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,19 +20,17 @@ import org.json.JSONObject;
 
 public class TodaysPlanActivity extends AppCompatActivity {
 
-    private TextView mealPlanTextView;
-    private TextView exercisePlanTextView;
-    private EditText todaysWeightEditText;
+    private static final String TAG = "TodaysPlanActivity";
+    private LinearLayout mealPlanLayout;
+    private LinearLayout exercisePlanLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todays_plan);
 
-        mealPlanTextView = findViewById(R.id.mealPlanTextView);
-        exercisePlanTextView = findViewById(R.id.exercisePlanTextView);
-        todaysWeightEditText = findViewById(R.id.todaysWeightEditText);
-        Button completeExerciseButton = findViewById(R.id.completeExerciseButton);
+        mealPlanLayout = findViewById(R.id.mealPlanLayout);
+        exercisePlanLayout = findViewById(R.id.exercisePlanLayout);
         Button backToHomeButton = findViewById(R.id.backToHomeButton);
 
         Intent intent = getIntent();
@@ -43,24 +42,21 @@ public class TodaysPlanActivity extends AppCompatActivity {
         String goal = intent.getStringExtra("goal");
         String dietaryPreferences = intent.getStringExtra("dietaryPreferences");
 
+        Log.d(TAG, "Received user info: " +
+                "age=" + age + ", gender=" + gender + ", height=" + height +
+                ", weight=" + weight + ", healthCondition=" + healthCondition +
+                ", goal=" + goal + ", dietaryPreferences=" + dietaryPreferences);
+
         fetchTodaysPlan(age, gender, height, weight, healthCondition, goal, dietaryPreferences);
 
         backToHomeButton.setOnClickListener(v -> {
             Intent homeIntent = new Intent(TodaysPlanActivity.this, HomePageActivity.class);
             startActivity(homeIntent);
         });
-
-        completeExerciseButton.setOnClickListener(v -> {
-            String weightInput = todaysWeightEditText.getText().toString();
-            if (weightInput.isEmpty()) {
-                Toast.makeText(TodaysPlanActivity.this, "Please enter today's weight", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(TodaysPlanActivity.this, "Exercise completed", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
-    private void fetchTodaysPlan(String age, String gender, String height, String weight, String healthCondition, String goal, String dietaryPreferences) {
+    private void fetchTodaysPlan(String age, String gender, String height, String weight,
+                                 String healthCondition, String goal, String dietaryPreferences) {
         String url = "http://10.0.2.2:5001/today_plan";
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -77,34 +73,63 @@ public class TodaysPlanActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        Log.d(TAG, "Sending data: " + requestObj);
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, requestObj,
                 response -> {
                     try {
-                        String todayPlan = response.getString("todayPlan");
-                        displayTodaysPlan(todayPlan);
+                        Log.d(TAG, "Received response: " + response.toString());
+                        if (response.has("todayPlan")) {
+                            String todayPlan = response.getString("todayPlan");
+                            displayTodaysPlan(todayPlan);
+                        } else {
+                            Log.e(TAG, "No 'todayPlan' field in response");
+                            Toast.makeText(TodaysPlanActivity.this, "Error: No 'todayPlan' field in response", Toast.LENGTH_SHORT).show();
+                        }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, "Error parsing today's plan", e);
                         Toast.makeText(TodaysPlanActivity.this, "Error parsing today's plan", Toast.LENGTH_SHORT).show();
                     }
                 },
-                error -> Toast.makeText(TodaysPlanActivity.this, "Error fetching today's plan: " + error.getMessage(), Toast.LENGTH_SHORT).show());
+                error -> {
+                    Log.e(TAG, "Error fetching today's plan: " + error.toString());
+                    Toast.makeText(TodaysPlanActivity.this, "Error fetching today's plan: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                });
 
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                180000, // 180 seconds
+                180000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        ));
 
         queue.add(jsonObjectRequest);
     }
 
     private void displayTodaysPlan(String todayPlan) {
+        Log.d(TAG, "Displaying plan: " + todayPlan);
+
         String[] sections = todayPlan.split("\n\n");
+
+        boolean isMealPlan = true;
+
         for (String section : sections) {
-            if (section.startsWith("Meal Plan:")) {
-                mealPlanTextView.setText(section.trim());
-            } else if (section.startsWith("Exercise Plan:")) {
-                exercisePlanTextView.setText(section.trim());
+            TextView textView = new TextView(this);
+            textView.setText(section.trim());
+            textView.setTextSize(16);
+            textView.setPadding(0, 10, 0, 10);
+
+            if (section.contains("**Meal Plan:**")) {
+                isMealPlan = true;
+            } else if (section.contains("**Exercise Plan:**")) {
+                isMealPlan = false;
+            }
+
+            if (isMealPlan) {
+                mealPlanLayout.addView(textView);
+            } else {
+                exercisePlanLayout.addView(textView);
             }
         }
     }
+
 }
